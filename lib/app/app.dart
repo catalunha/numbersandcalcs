@@ -18,6 +18,7 @@ class App extends StatelessWidget {
       supportedLocales: const [
         Locale('pt', 'BR'),
       ],
+
       // initialBinding: SplashDependencies(),
       getPages: Routes.pageList,
       initialRoute: Routes.configs,
