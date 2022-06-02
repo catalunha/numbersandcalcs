@@ -25,7 +25,7 @@ class Routes {
     GetPage(
       name: Routes.calcs,
       binding: GameDependencies(),
-      page: () => const CalcsPage(),
+      page: () => CalcsPage(),
     ),
     GetPage(
       name: Routes.answers,

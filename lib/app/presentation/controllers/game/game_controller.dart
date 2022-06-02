@@ -1,17 +1,28 @@
 import 'dart:math';
 
 import 'package:aluno/app/presentation/controllers/game/game_exception.dart';
+import 'package:aluno/app/routes.dart';
 import 'package:get/get.dart';
 
 import 'package:aluno/app/domain/utils/enums.dart';
 
 class GameController extends GetxController {
+  final _index = 0.obs;
+  get index => _index.value;
+
   var list1 = <int>[].obs;
   var list2 = <int>[].obs;
+  var answers = <int>[].obs;
+  var responses = <int>[].obs;
+  var response = ''.obs;
+
   final _errorMsg = 'aaaa'.obs;
   final _errorCode = 1.obs;
   get errorMsg => _errorMsg.value;
   get errorCode => _errorCode.value;
+
+  late final TypeOfOperations operationTypeCalc;
+
   void startTraining({
     required int? amount,
     required TypeOfOperations operationType,
@@ -38,11 +49,15 @@ class GameController extends GetxController {
     _errorMsg('Sem erro: Passou em todas as analises consideradas.');
     list1.clear();
     list2.clear();
-
+    operationTypeCalc = operationType;
     try {
       if (amount == null) {
         throw GameException(
             code: 100, message: 'Erro : Informe a quantidade de operações.');
+      }
+      if (amount > 100) {
+        throw GameException(
+            code: 100, message: 'Erro : Limite atual é de 100 operações.');
       }
       if ([
         TypeOfOperations.sum,
@@ -244,6 +259,34 @@ class GameController extends GetxController {
         throw GameException(
             code: 400, message: 'Erro : Listas com tamanhos diferentes');
       }
+      //+++ calculus
+      answers.clear();
+      if (operationType == TypeOfOperations.sum) {
+        for (var i = 0; i < list1.length; i++) {
+          answers.add(list1[i] + list2[i]);
+        }
+      } else if (operationType == TypeOfOperations.subtraction) {
+        for (var i = 0; i < list1.length; i++) {
+          answers.add(list1[i] - list2[i]);
+        }
+      } else if (operationType == TypeOfOperations.multiplication) {
+        for (var i = 0; i < list1.length; i++) {
+          answers.add(list1[i] * list2[i]);
+        }
+      } else if (operationType == TypeOfOperations.division) {
+        for (var i = 0; i < list1.length; i++) {
+          answers.add(list1[i] ~/ list2[i]);
+        }
+      } else if (operationType == TypeOfOperations.potency) {
+        for (var i = 0; i < list1.length; i++) {
+          answers.add(pow(list1[i], list2[i]).toInt());
+        }
+      } else if (operationType == TypeOfOperations.squareRoot) {
+        for (var i = 0; i < list1.length; i++) {
+          answers.add(pow(list1[i], 1 / list2[i]).toInt());
+        }
+      }
+      Get.toNamed(Routes.calcs);
     } on GameException catch (e) {
       _errorCode(e.code);
       _errorMsg(e.message);

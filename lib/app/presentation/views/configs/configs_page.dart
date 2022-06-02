@@ -61,10 +61,10 @@ class _ConfigsPageState extends State<ConfigsPage> {
                           variable: operationType,
                           faz: (value) {
                             operationType = value;
-                            _num2IntervalTEC.text = '';
-                            _num2StartTEC.text = '';
-                            // _num2AmountTEC.text = '';
-                            _num2EndTEC.text = '';
+                            // _num2IntervalTEC.text = '';
+                            // _num2StartTEC.text = '';
+                            // // _num2AmountTEC.text = '';
+                            // _num2EndTEC.text = '';
                           },
                         ),
                       ],
@@ -77,6 +77,8 @@ class _ConfigsPageState extends State<ConfigsPage> {
             Card(
               color: Colors.grey.shade100,
               child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text('First list of numbers'),
                   Obx(() => widget.gameController.errorCode == 200
@@ -163,15 +165,6 @@ class _ConfigsPageState extends State<ConfigsPage> {
                                   TypeOfOperations.division,
                                 ].contains(operationType)),
                         input(title: 'start', controller: _num2StartTEC),
-                        // input(
-                        //     title: 'amount',
-                        //     controller: _num2AmountTEC,
-                        //     enabled: [
-                        //       TypeOfOperations.sum,
-                        //       TypeOfOperations.subtraction,
-                        //       TypeOfOperations.multiplication,
-                        //       TypeOfOperations.division,
-                        //     ].contains(operationType)),
                         input(
                             title: 'end',
                             controller: _num2EndTEC,
@@ -205,13 +198,15 @@ class _ConfigsPageState extends State<ConfigsPage> {
               },
               child: const Text('Start Training'),
             ),
-            const Text('Error:'),
-            Obx(() => Text('${widget.gameController.errorCode}')),
-            Obx(() => Text(widget.gameController.errorMsg)),
-            const Text('1ª list:'),
+            // const Text('Error:'),
+            // Obx(() => Text('${widget.gameController.errorCode}')),
+            // Obx(() => Text(widget.gameController.errorMsg)),
+            // const Text('1ª list:'),
             Obx(() => Text(widget.gameController.list1.toString())),
-            const Text('2ª list:'),
+            // const Text('2ª list:'),
             Obx(() => Text(widget.gameController.list2.toString())),
+            // const Text('answers:'),
+            Obx(() => Text(widget.gameController.answers.toString())),
           ],
         )),
       ),
@@ -226,35 +221,39 @@ class _ConfigsPageState extends State<ConfigsPage> {
       width: 60,
       // height: 60,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
+        // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(title),
           enabled
-              ? TextField(
-                  controller: controller,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 0.0, horizontal: 10.0),
-                    enabled: enabled,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+              ? SizedBox(
+                  height: 30,
+                  width: 50,
+                  child: TextField(
+                    controller: controller,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 1.0, horizontal: 10.0),
+                      enabled: enabled,
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          gapPadding: 2),
+                      prefixIcon: enabled
+                          ? null
+                          : const Icon(
+                              Icons.block,
+                              color: Colors.red,
+                            ),
                     ),
-                    prefixIcon: enabled
-                        ? null
-                        : const Icon(
-                            Icons.block,
-                            color: Colors.red,
-                          ),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                   ),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
                 )
               : const SizedBox(
-                  width: 62,
-                  height: 60,
+                  width: 60,
+                  height: 30,
                 ),
         ],
       ),
@@ -273,7 +272,7 @@ class _ConfigsPageState extends State<ConfigsPage> {
         Text(title),
         enabled
             ? Container(
-                height: 48,
+                height: 30,
                 width: 130,
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(
@@ -303,7 +302,7 @@ class _ConfigsPageState extends State<ConfigsPage> {
                   ),
                 ),
               )
-            : const SizedBox(width: 130, height: 48),
+            : const SizedBox(width: 130, height: 30),
       ],
     );
   }
@@ -320,7 +319,7 @@ class _ConfigsPageState extends State<ConfigsPage> {
         Text(title),
         enabled
             ? Container(
-                height: 48,
+                height: 30,
                 width: 150,
                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(
