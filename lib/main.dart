@@ -1,4 +1,4 @@
-import 'package:aluno/app/app.dart';
+import 'package:numbersandcalcs/app/app.dart';
 import 'package:flutter/material.dart';
 
 void main() {

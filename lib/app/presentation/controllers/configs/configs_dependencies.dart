@@ -1,4 +1,4 @@
-import 'package:aluno/app/presentation/controllers/configs/configs_controller.dart';
+import 'package:numbersandcalcs/app/presentation/controllers/configs/configs_controller.dart';
 import 'package:get/get.dart';
 
 class ConfigsDependencies implements Bindings {

@@ -1,27 +1,121 @@
+import 'dart:async';
 import 'dart:math';
 
-import 'package:aluno/app/presentation/controllers/game/game_exception.dart';
-import 'package:aluno/app/routes.dart';
+import 'package:numbersandcalcs/app/presentation/controllers/game/game_exception.dart';
+import 'package:numbersandcalcs/app/routes.dart';
 import 'package:get/get.dart';
 
-import 'package:aluno/app/domain/utils/enums.dart';
+import 'package:numbersandcalcs/app/domain/utils/enums.dart';
 
 class GameController extends GetxController {
   final _index = 0.obs;
-  get index => _index.value;
+  int get index => _index.value;
+  set index(int value) => _index.value = value;
 
   var list1 = <int>[].obs;
   var list2 = <int>[].obs;
   var answers = <int>[].obs;
-  var responses = <int>[].obs;
+  var responses = <int?>[].obs;
   var response = ''.obs;
 
-  final _errorMsg = 'aaaa'.obs;
+  final _errorMsg = ''.obs;
   final _errorCode = 1.obs;
   get errorMsg => _errorMsg.value;
   get errorCode => _errorCode.value;
+  @override
+  void onInit() {
+    super.onInit();
+    resetGame();
+  }
 
-  late final TypeOfOperations operationTypeCalc;
+  @override
+  void onClose() {
+    resetGame();
+    super.onClose();
+  }
+
+  TypeOfOperations operationTypeCalc = TypeOfOperations.addition;
+
+  var segCount = 0.obs;
+  get timeCount =>
+      '${minCount.value.toString().padLeft(2, '0')}:${segCount.value.toString().padLeft(2, '0')}';
+  var minCount = 0.obs;
+
+  Timer _timer = Timer(const Duration(seconds: 0), () {});
+  void timerStart() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      segCount.value++;
+      if (segCount > 60) {
+        segCount(0);
+        minCount(minCount.value + 1);
+        if (minCount > 60) {
+          segCount(0);
+          minCount(0);
+        }
+      }
+    });
+  }
+
+  void timerCancel() {
+    _timer.cancel();
+    // segCount(0);
+    // minCount(0);
+  }
+
+  void resetGame() {
+    _timer.cancel();
+    segCount(0);
+    minCount(0);
+    response('');
+    index = 0;
+    list1.clear();
+    list2.clear();
+    answers.clear();
+    responses.clear();
+  }
+
+  int numberOfCorrectAnswers() {
+    int correct = 0;
+    for (var i = 0; i < answers.length; i++) {
+      if (answers[i] == responses[i]) {
+        correct++;
+      }
+    }
+    return correct;
+  }
+
+  keyValue(String key) {
+    response(response.value + key);
+  }
+
+  keyMinus(String key) {
+    if (response.value.isEmpty) {
+      response(response.value + key);
+    }
+  }
+
+  keyBackspace() {
+    if (response.value.isNotEmpty) {
+      response(response.value.substring(0, response.value.length - 1));
+    }
+  }
+
+  nextCalc() {
+    if (responses.length < list1.length) {
+      if (response.value.isNotEmpty && response.value != '-') {
+        responses.add(int.parse(response.value));
+      } else {
+        responses.add(null);
+      }
+    }
+    response.value = '';
+    if (index < list1.length - 1) {
+      index = index + 1;
+    } else {
+      timerCancel();
+      Get.toNamed(Routes.answers);
+    }
+  }
 
   void startTraining({
     required int? amount,
@@ -35,16 +129,6 @@ class GameController extends GetxController {
     required int? num2Start,
     required int? num2End,
   }) {
-    print('amount: $amount');
-    print('operationType: $operationType');
-    print('num1Type: $list1Type');
-    print('num1Interval: $num1Interval');
-    print('num1Start: $num1Start');
-    print('num1End: $num1End');
-    print('num2Type: $list2Type');
-    print('num2Interval: $num2Interval');
-    print('num2Start: $num2Start');
-    print('num2End: $num2End');
     _errorCode(0);
     _errorMsg('Sem erro: Passou em todas as analises consideradas.');
     list1.clear();
@@ -55,12 +139,12 @@ class GameController extends GetxController {
         throw GameException(
             code: 100, message: 'Erro : Informe a quantidade de operações.');
       }
-      if (amount > 100) {
+      if (amount > 50) {
         throw GameException(
-            code: 100, message: 'Erro : Limite atual é de 100 operações.');
+            code: 100, message: 'Erro : Limite atual é de 50 operações.');
       }
       if ([
-        TypeOfOperations.sum,
+        TypeOfOperations.addition,
         TypeOfOperations.subtraction,
         TypeOfOperations.multiplication,
         TypeOfOperations.division,
@@ -142,8 +226,6 @@ class GameController extends GetxController {
               message: 'Erro : Você escolheu [**(>1),**(<1)] e um start nulo.');
         }
       }
-      print('Sem erro. Gerar listas');
-
       // +++ list1
       list1.clear();
       if (list1Type == TypeOfNumbers.sequence) {
@@ -198,7 +280,7 @@ class GameController extends GetxController {
       // +++ list2
       list2.clear();
       if ([
-        TypeOfOperations.sum,
+        TypeOfOperations.addition,
         TypeOfOperations.subtraction,
         TypeOfOperations.multiplication,
         TypeOfOperations.division,
@@ -259,9 +341,13 @@ class GameController extends GetxController {
         throw GameException(
             code: 400, message: 'Erro : Listas com tamanhos diferentes');
       }
+      //+++ randomize lists
+      list1.shuffle();
+      list2.shuffle();
+
       //+++ calculus
       answers.clear();
-      if (operationType == TypeOfOperations.sum) {
+      if (operationType == TypeOfOperations.addition) {
         for (var i = 0; i < list1.length; i++) {
           answers.add(list1[i] + list2[i]);
         }
@@ -277,15 +363,20 @@ class GameController extends GetxController {
         for (var i = 0; i < list1.length; i++) {
           answers.add(list1[i] ~/ list2[i]);
         }
-      } else if (operationType == TypeOfOperations.potency) {
+      } else if (operationType == TypeOfOperations.exponents) {
         for (var i = 0; i < list1.length; i++) {
           answers.add(pow(list1[i], list2[i]).toInt());
         }
-      } else if (operationType == TypeOfOperations.squareRoot) {
+      } else if (operationType == TypeOfOperations.roots) {
         for (var i = 0; i < list1.length; i++) {
           answers.add(pow(list1[i], 1 / list2[i]).toInt());
         }
       }
+
+      responses.clear();
+      response.value = '';
+      index = 0;
+      timerStart();
       Get.toNamed(Routes.calcs);
     } on GameException catch (e) {
       _errorCode(e.code);

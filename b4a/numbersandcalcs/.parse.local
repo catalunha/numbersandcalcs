@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "_default": {
+      "link": "numbersandcalcs"
+    },
+    "numbersandcalcs": {
+      "applicationId": "lRQ9Ffl0dE5oBE4pLaQHN37dMr5c23HeJvhZ3316"
+    }
+  }
+}

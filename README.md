@@ -1,16 +1,13 @@
 # numbersandcalcs
 
-A new Flutter project.
+numbersandcalcs.b4a.app
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+# deploy
 
-A few resources to get you started if this is your first Flutter project:
+cd ~/myapp/numbersandcalcs && flutter build web && cd ./b4a/numbersandcalcs && b4a deploy
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Finished uploading files
+New release is named v1 (using Parse JavaScript SDK v2.2.25)
+catalunha@pop-os:~/myapp/numbersandcalcs/b4a/numbersandcalcs$

@@ -1,7 +1,7 @@
-import 'package:aluno/app/presentation/controllers/game/game_dependencies.dart';
-import 'package:aluno/app/presentation/views/answers/answers_page.dart';
-import 'package:aluno/app/presentation/views/calcs/calcs_page.dart';
-import 'package:aluno/app/presentation/views/configs/configs_page.dart';
+import 'package:numbersandcalcs/app/presentation/controllers/game/game_dependencies.dart';
+import 'package:numbersandcalcs/app/presentation/views/answers/answers_page.dart';
+import 'package:numbersandcalcs/app/presentation/views/calcs/calcs_page.dart';
+import 'package:numbersandcalcs/app/presentation/views/configs/configs_page.dart';
 import 'package:get/get.dart';
 
 class Routes {
@@ -30,7 +30,7 @@ class Routes {
     GetPage(
       name: Routes.answers,
       binding: GameDependencies(),
-      page: () => const AnswersPage(),
+      page: () => AnswersPage(),
     ),
   ];
 }

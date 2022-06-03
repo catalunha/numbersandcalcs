@@ -1,8 +1,10 @@
-import 'package:aluno/app/domain/utils/enums.dart';
-import 'package:aluno/app/presentation/controllers/game/game_controller.dart';
+import 'package:numbersandcalcs/app/domain/utils/enums.dart';
+import 'package:numbersandcalcs/app/presentation/controllers/game/game_controller.dart';
+import 'package:numbersandcalcs/app/presentation/views/utils/app_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ConfigsPage extends StatefulWidget {
   GameController gameController = Get.find();
@@ -15,7 +17,7 @@ class ConfigsPage extends StatefulWidget {
 class _ConfigsPageState extends State<ConfigsPage> {
   TypeOfNumbers list1Type = TypeOfNumbers.sequence;
   TypeOfNumbers list2Type = TypeOfNumbers.sequence;
-  TypeOfOperations operationType = TypeOfOperations.sum;
+  TypeOfOperations operationType = TypeOfOperations.addition;
 
   final _amountTEC = TextEditingController();
 
@@ -30,185 +32,208 @@ class _ConfigsPageState extends State<ConfigsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Numbers and Calcs')),
-      body: SizedBox(
-        width: 400,
-        child: SingleChildScrollView(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Card(
-              color: Colors.grey.shade100,
+      appBar: AppAppbar(title: 'Numbers and Calcs'),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: SizedBox(
+          width: 400,
+          child: SingleChildScrollView(
               child: Column(
-                children: [
-                  const Text('Math operations'),
-                  Obx(() => widget.gameController.errorCode == 100
-                      ? Text(
-                          widget.gameController.errorMsg,
-                          style: const TextStyle(color: Colors.red),
-                        )
-                      : const SizedBox()),
-                  Card(
-                    color: Colors.grey.shade200,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        input(title: 'amounts', controller: _amountTEC),
-                        dropOperation(
-                          title: 'type',
-                          options: TypeOfOperations.values,
-                          variable: operationType,
-                          faz: (value) {
-                            operationType = value;
-                            // _num2IntervalTEC.text = '';
-                            // _num2StartTEC.text = '';
-                            // // _num2AmountTEC.text = '';
-                            // _num2EndTEC.text = '';
-                          },
-                        ),
-                      ],
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Card(
+                color: Colors.grey.shade100,
+                child: Column(
+                  children: [
+                    const Text(
+                      'Math operations',
+                      // style: GoogleFonts.pacifico(
+                      //     // fontSize: 12.0,
+                      //     // color: Colors.black,
+                      //     ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            // const SizedBox(height: 10),
-            Card(
-              color: Colors.grey.shade100,
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text('First list of numbers'),
-                  Obx(() => widget.gameController.errorCode == 200
-                      ? Text(
-                          widget.gameController.errorMsg,
-                          style: const TextStyle(color: Colors.red),
-                        )
-                      : const SizedBox()),
-                  Card(
-                    color: Colors.grey.shade200,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        dropNumberType(
-                          title: 'type',
-                          options: TypeOfNumbers.values,
-                          variable: list1Type,
-                          faz: (value) {
-                            list1Type = value;
-                            _num1IntervalTEC.text = '';
-                            _num1StartTEC.text = '';
-                            _num1EndTEC.text = '';
-                          },
-                        ),
-                        input(
-                          title: 'interval',
-                          controller: _num1IntervalTEC,
-                          enabled: TypeOfNumbers.sequence == list1Type,
-                        ),
-                        input(title: 'start', controller: _num1StartTEC),
-                        input(
-                          title: 'end',
-                          controller: _num1EndTEC,
-                          enabled: TypeOfNumbers.random == list1Type,
-                        ),
-                      ],
+                    Obx(() => widget.gameController.errorCode == 100
+                        ? Text(
+                            widget.gameController.errorMsg,
+                            style: const TextStyle(color: Colors.red),
+                          )
+                        : const SizedBox()),
+                    Card(
+                      color: Colors.grey.shade200,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          input(title: 'quantity', controller: _amountTEC),
+                          dropOperation(
+                            title: 'type',
+                            options: TypeOfOperations.values,
+                            variable: operationType,
+                            faz: (value) {
+                              operationType = value;
+                              // _num2IntervalTEC.text = '';
+                              // _num2StartTEC.text = '';
+                              // // _num2AmountTEC.text = '';
+                              // _num2EndTEC.text = '';
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Card(
-              color: Colors.grey.shade100,
-              child: Column(
-                children: [
-                  const Text('Second list of numbers'),
-                  Obx(() => widget.gameController.errorCode == 300
-                      ? Text(
-                          widget.gameController.errorMsg,
-                          style: const TextStyle(color: Colors.red),
-                        )
-                      : const SizedBox()),
-                  Card(
-                    color: Colors.grey.shade200,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        dropNumberType(
-                          title: 'type',
-                          options: TypeOfNumbers.values,
-                          variable: list2Type,
-                          faz: (value) {
-                            list2Type = value;
-                            _num2IntervalTEC.text = '';
-                            _num2StartTEC.text = '';
-                            _num2EndTEC.text = '';
-                          },
-                          enabled: [
-                            TypeOfOperations.sum,
-                            TypeOfOperations.subtraction,
-                            TypeOfOperations.multiplication,
-                            TypeOfOperations.division,
-                          ].contains(operationType),
-                        ),
-                        input(
+              // const SizedBox(height: 10),
+              Card(
+                color: Colors.grey.shade100,
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text('First list of numbers'),
+                    Obx(() => widget.gameController.errorCode == 200
+                        ? Text(
+                            widget.gameController.errorMsg,
+                            style: const TextStyle(color: Colors.red),
+                          )
+                        : const SizedBox()),
+                    Card(
+                      color: Colors.grey.shade200,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          dropNumberType(
+                            title: 'number type',
+                            options: TypeOfNumbers.values,
+                            variable: list1Type,
+                            faz: (value) {
+                              list1Type = value;
+                              _num1IntervalTEC.text = '';
+                              _num1StartTEC.text = '';
+                              _num1EndTEC.text = '';
+                            },
+                          ),
+                          input(
                             title: 'interval',
-                            controller: _num2IntervalTEC,
-                            enabled: TypeOfNumbers.sequence == list2Type &&
-                                [
-                                  TypeOfOperations.sum,
-                                  TypeOfOperations.subtraction,
-                                  TypeOfOperations.multiplication,
-                                  TypeOfOperations.division,
-                                ].contains(operationType)),
-                        input(title: 'start', controller: _num2StartTEC),
-                        input(
-                            title: 'end',
-                            controller: _num2EndTEC,
-                            enabled: TypeOfNumbers.random == list2Type &&
-                                [
-                                  TypeOfOperations.sum,
-                                  TypeOfOperations.subtraction,
-                                  TypeOfOperations.multiplication,
-                                  TypeOfOperations.division,
-                                ].contains(operationType)),
-                      ],
+                            controller: _num1IntervalTEC,
+                            enabled: TypeOfNumbers.sequence == list1Type,
+                          ),
+                          input(title: 'start at', controller: _num1StartTEC),
+                          input(
+                            title: 'end at',
+                            controller: _num1EndTEC,
+                            enabled: TypeOfNumbers.random == list1Type,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                widget.gameController.startTraining(
-                  amount: int.tryParse(_amountTEC.text),
-                  operationType: operationType,
-                  list1Type: list1Type,
-                  num1Interval: int.tryParse(_num1IntervalTEC.text),
-                  num1Start: int.tryParse(_num1StartTEC.text),
-                  num1End: int.tryParse(_num1EndTEC.text),
-                  list2Type: list2Type,
-                  num2Interval: int.tryParse(_num2IntervalTEC.text),
-                  num2Start: int.tryParse(_num2StartTEC.text),
-                  num2End: int.tryParse(_num2EndTEC.text),
-                );
-              },
-              child: const Text('Start Training'),
-            ),
-            // const Text('Error:'),
-            // Obx(() => Text('${widget.gameController.errorCode}')),
-            // Obx(() => Text(widget.gameController.errorMsg)),
-            // const Text('1ª list:'),
-            Obx(() => Text(widget.gameController.list1.toString())),
-            // const Text('2ª list:'),
-            Obx(() => Text(widget.gameController.list2.toString())),
-            // const Text('answers:'),
-            Obx(() => Text(widget.gameController.answers.toString())),
-          ],
-        )),
+              const SizedBox(height: 10),
+              Card(
+                color: Colors.grey.shade100,
+                child: Column(
+                  children: [
+                    const Text('Second list of numbers'),
+                    Obx(() => widget.gameController.errorCode == 300
+                        ? Text(
+                            widget.gameController.errorMsg,
+                            style: const TextStyle(color: Colors.red),
+                          )
+                        : const SizedBox()),
+                    Card(
+                      color: Colors.grey.shade200,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          dropNumberType(
+                            title: 'number type',
+                            options: TypeOfNumbers.values,
+                            variable: list2Type,
+                            faz: (value) {
+                              list2Type = value;
+                              _num2IntervalTEC.text = '';
+                              _num2StartTEC.text = '';
+                              _num2EndTEC.text = '';
+                            },
+                            enabled: [
+                              TypeOfOperations.addition,
+                              TypeOfOperations.subtraction,
+                              TypeOfOperations.multiplication,
+                              TypeOfOperations.division,
+                            ].contains(operationType),
+                          ),
+                          input(
+                              title: 'interval',
+                              controller: _num2IntervalTEC,
+                              enabled: TypeOfNumbers.sequence == list2Type &&
+                                  [
+                                    TypeOfOperations.addition,
+                                    TypeOfOperations.subtraction,
+                                    TypeOfOperations.multiplication,
+                                    TypeOfOperations.division,
+                                  ].contains(operationType)),
+                          input(title: 'start at', controller: _num2StartTEC),
+                          input(
+                              title: 'end at',
+                              controller: _num2EndTEC,
+                              enabled: TypeOfNumbers.random == list2Type &&
+                                  [
+                                    TypeOfOperations.addition,
+                                    TypeOfOperations.subtraction,
+                                    TypeOfOperations.multiplication,
+                                    TypeOfOperations.division,
+                                  ].contains(operationType)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  widget.gameController.startTraining(
+                    amount: int.tryParse(_amountTEC.text),
+                    operationType: operationType,
+                    list1Type: list1Type,
+                    num1Interval: int.tryParse(_num1IntervalTEC.text),
+                    num1Start: int.tryParse(_num1StartTEC.text),
+                    num1End: int.tryParse(_num1EndTEC.text),
+                    list2Type: list2Type,
+                    num2Interval: int.tryParse(_num2IntervalTEC.text),
+                    num2Start: int.tryParse(_num2StartTEC.text),
+                    num2End: int.tryParse(_num2EndTEC.text),
+                  );
+                },
+                child: Text(
+                  'Start Game',
+                  style: GoogleFonts.pacifico(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                'Developed with ❤️ by brintec.org',
+                style:
+                    GoogleFonts.pacifico(fontSize: 12.0, color: Colors.black),
+              )
+              // const Text('Error:'),
+              // Obx(() => Text('${widget.gameController.errorCode}')),
+              // Obx(() => Text(widget.gameController.errorMsg)),
+              // const Text('1ª list:'),
+              // Obx(() => Text(widget.gameController.list1.toString())),
+              // // const Text('2ª list:'),
+              // Obx(() => Text(widget.gameController.list2.toString())),
+              // // const Text('answers:'),
+              // Obx(() => Text(widget.gameController.answers.toString())),
+            ],
+          )),
+        ),
       ),
     );
   }

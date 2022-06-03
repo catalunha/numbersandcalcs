@@ -1,16 +1,16 @@
 enum TypeOfNumbers { sequence, even, odd, prime, random }
 
 enum TypeOfOperations {
-  sum,
+  addition,
   subtraction,
   multiplication,
   division,
-  potency,
-  squareRoot;
+  exponents,
+  roots;
 
   String get symbol {
     switch (this) {
-      case TypeOfOperations.sum:
+      case TypeOfOperations.addition:
         return '+';
       case TypeOfOperations.subtraction:
         return '-';
@@ -18,9 +18,9 @@ enum TypeOfOperations {
         return '*';
       case TypeOfOperations.division:
         return '/';
-      case TypeOfOperations.potency:
+      case TypeOfOperations.exponents:
         return '**';
-      case TypeOfOperations.squareRoot:
+      case TypeOfOperations.roots:
         return '~*';
       default:
         return '...';
