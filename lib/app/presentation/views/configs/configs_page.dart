@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:numbersandcalcs/app/presentation/views/utils/app_launch.dart';
 
 class ConfigsPage extends StatefulWidget {
   GameController gameController = Get.find();
@@ -214,13 +215,33 @@ class _ConfigsPageState extends State<ConfigsPage> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 5,
-              ),
+              const SizedBox(height: 15),
               Text(
                 'Developed with ❤️ by brintec.org',
                 style:
                     GoogleFonts.pacifico(fontSize: 12.0, color: Colors.black),
+              ),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () => AppLaunch.launchLink(
+                        'https://numbersandcalcs.brintec.org/terms-of-use/'),
+                    child: Text(
+                      'Terms of use',
+                      style: GoogleFonts.pacifico(fontSize: 10.0),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () => AppLaunch.launchLink(
+                        'https://numbersandcalcs.brintec.org/privacy-policy/'),
+                    child: Text(
+                      'Privacy police',
+                      style: GoogleFonts.pacifico(fontSize: 10.0),
+                    ),
+                  ),
+                ],
               )
               // const Text('Error:'),
               // Obx(() => Text('${widget.gameController.errorCode}')),
